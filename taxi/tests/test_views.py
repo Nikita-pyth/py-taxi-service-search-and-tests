@@ -16,8 +16,10 @@ class ManufacturerListViewTest(TestCase):
     def test_manufacturer_filter_by_name(self):
         response = self.client.get(reverse("taxi:manufacturer-list"),
                                    {"name": "BM"})
-        self.assertContains(response, "BMW")
-        self.assertNotContains(response, "Toyota")
+        manufacturers = list(response.context["manufacturer_list"])
+        self.assertEqual(len(manufacturers), 1)
+        self.assertEqual(manufacturers[0].name, "BMW")
+
 
 
 class CarListViewTest(TestCase):
@@ -34,8 +36,9 @@ class CarListViewTest(TestCase):
 
     def test_car_filter_by_model(self):
         response = self.client.get(reverse("taxi:car-list"), {"model": "X"})
-        self.assertContains(response, "X5")
-        self.assertNotContains(response, "Corolla")
+        cars = list(response.context["car_list"])
+        self.assertEqual(len(cars), 1)
+        self.assertEqual(cars[0].model, "X5")
 
 
 class DriverListViewTest(TestCase):
@@ -55,8 +58,9 @@ class DriverListViewTest(TestCase):
         response = self.client.get(reverse(
             "taxi:driver-list"), {"username": "jo"}
         )
-        self.assertContains(response, "john")
-        self.assertNotContains(response, "alex")
+        drivers = list(response.context["driver_list"])
+        self.assertEqual(len(drivers), 1)
+        self.assertEqual(drivers[0].username, "john")
 
 
 class ToggleAssignToCarTest(TestCase):
