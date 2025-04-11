@@ -21,7 +21,6 @@ class ManufacturerListViewTest(TestCase):
         self.assertEqual(manufacturers[0].name, "BMW")
 
 
-
 class CarListViewTest(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
