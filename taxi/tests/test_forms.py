@@ -2,7 +2,9 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-from taxi.forms import DriverLicenseUpdateForm
+from taxi.forms import (DriverLicenseUpdateForm,
+                        DriverUsernameSearchForm, CarModelSearchForm,
+                        ManufacturerNameSearchForm)
 from taxi.models import Car, Manufacturer
 
 
@@ -60,3 +62,39 @@ class CarFormTest(TestCase):
             [self.driver1, self.driver2],
             transform=lambda x: x,
         )
+
+
+class DriverUsernameSearchFormTest(TestCase):
+    def test_valid_username_input(self):
+        form = DriverUsernameSearchForm(data={"username": "john_doe"})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["username"], "john_doe")
+
+    def test_empty_username_input(self):
+        form = DriverUsernameSearchForm(data={"username": ""})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["username"], "")
+
+
+class CarModelSearchFormTest(TestCase):
+    def test_valid_model_input(self):
+        form = CarModelSearchForm(data={"model": "Tesla Model S"})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["model"], "Tesla Model S")
+
+    def test_empty_model_input(self):
+        form = CarModelSearchForm(data={"model": ""})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["model"], "")
+
+
+class ManufacturerNameSearchFormTest(TestCase):
+    def test_valid_name_input(self):
+        form = ManufacturerNameSearchForm(data={"name": "Toyota"})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["name"], "Toyota")
+
+    def test_empty_name_input(self):
+        form = ManufacturerNameSearchForm(data={"name": ""})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["name"], "")
